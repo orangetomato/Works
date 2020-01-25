@@ -1,36 +1,27 @@
 'use strict';
 
-let result = [];
-let string = '';
 function solveEquation (a, b, c) {
     if (!a) {
-        string += 'Старший коэффициент должен быть отличен от нуля';
-        return;
-    }
+        return [];
+    } //Старший коэффициент должен быть отличен от нуля
 
-    let d = b ** 2 - 4 * a * c;
-    if (d < 0) {
-        string += 'Уравнение не имеет корней';
-        return;
-    }
+    const D = b ** 2 - 4 * a * c;
+    
+    if (D < 0) {
+        return [];
+    } //Уравнение не имеет корней
 
-    if (!d) {
+    if (!D) {
         let x = -b / 2 * a;
-        string += x.toString();
-        result.push(x);
-        return;
+        return [x];
     }
 
-    let x1 = ( -b + Math.sqrt(d) ) / 2 * a;
-    let x2 = ( -b - Math.sqrt(d) ) / 2 * a;
-    string += x1.toString() + ', ' + x2.toString();
-    result.push(x1, x2);
+    let x1 = ( -b + Math.sqrt(D) ) / 2 * a;
+    let x2 = ( -b - Math.sqrt(D) ) / 2 * a;
+    return [x1, x2];
 }
 
-solveEquation(1, 2, -3);
-//solveEquation(1, 6, 9);
-//solveEquation(1, 2, 17);
-//solveEquation(0, 3, 15);
-
-console.log(string);
-console.log(result);
+console.log( solveEquation(1, 2, -3) );
+console.log( solveEquation(1, 6, 9) );
+console.log( solveEquation(1, 2, 17) );
+console.log( solveEquation(0, 3, 15) );
