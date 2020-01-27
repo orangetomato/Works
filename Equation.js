@@ -2,7 +2,7 @@
 
 function solveEquation (a, b, c) {
     if (!a) {
-        return [];
+        return [-c / b];
     } //Старший коэффициент должен быть отличен от нуля
 
     const D = b ** 2 - 4 * a * c;
@@ -12,8 +12,7 @@ function solveEquation (a, b, c) {
     } //Уравнение не имеет корней
 
     if (!D) {
-        let x = -b / 2 * a;
-        return [x];
+        return [-b / 2 * a];
     }
 
     let x1 = ( -b + Math.sqrt(D) ) / 2 * a;
