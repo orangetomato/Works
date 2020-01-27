@@ -1,6 +1,6 @@
 'use strict';
 
-function createName(request, defaultValue) {
+function getName(request, defaultValue) {
     let nameValue;
     do {
         nameValue = prompt(request, defaultValue);
@@ -8,9 +8,9 @@ function createName(request, defaultValue) {
     return nameValue;
 }
 
-let lastName = createName('Введите вашу фамилию', 'Иванов');
-let firstName = createName('Введите ваше имя', 'Иван');
-let patronymicName = createName('Введите ваше отчество', 'Иванович');
+let lastName = getName('Введите вашу фамилию', 'Иванов');
+let firstName = getName('Введите ваше имя', 'Иван');
+let patronymicName = getName('Введите ваше отчество', 'Иванович');
 
 let now = new Date();
 let currentYear = now.getFullYear();
@@ -45,8 +45,8 @@ if (currentMonth < birthMonth) {
 if (currentDay < birthDay) {
   months -= 1;
   if (months < 0) {
-  years -= 1;
-  months += 12;
+    years -= 1;
+    months += 12;
   }
 }
 
@@ -65,9 +65,8 @@ if (kids) {
   kidsNumber = 0;
 }
 
-let whoYouAre;
-(years >= 18) ? (gender === 'М') ? (whoYouAre = 'совершеннолетний') : (whoYouAre = 'совершеннолетняя') 
-: (gender === 'М') ? (whoYouAre = 'несовершеннолетний') : (whoYouAre = 'несовершеннолетняя');
+let whoYouAre = (years >= 18) ? (gender === 'М') ? 'совершеннолетний' : 'совершеннолетняя' 
+: (gender === 'М') ? 'несовершеннолетний' : 'несовершеннолетняя';
 
 alert(`
   ${lastName} ${firstName} ${patronymicName}, 
