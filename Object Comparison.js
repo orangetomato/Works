@@ -12,11 +12,16 @@ console.log( compareObjects(obj, obj2) );
 ////////////////////////////////////////////////////////////
 
 function compareObjects2(a, b) {
+    if (isNaN(a) && isNaN(b) && typeof a === 'number' && typeof b === 'number') {
+        return true;
+    }
     if (a === b) {
         return true;
     }
-    if (a === null || typeof(a) !== 'object' ||
-        b === null || typeof(b) !== 'object') {
+    if (typeof a === 'function' || typeof b === 'function') {
+        return a.toString() === b.toString();
+    }
+    if (!(a instanceof Object || b instanceof Object)) {
         return false;
     }
     if (Object.keys(a).length !== Object.keys(b).length) {
@@ -30,7 +35,7 @@ function compareObjects2(a, b) {
     return true;
 }
 
-let obj3 = {z: {x: 1}, y: 'hey'};
-let obj4 = {y: 'hey', z: {x: 1}};
+let obj3 = {z: ()=>0, y: 'hey', x: NaN, w: null, v: {u: 1}};
+let obj4 = {y: 'hey', z: ()=>0, v: {u: 1}, w: null, x: NaN};
 
 console.log( compareObjects2(obj3, obj4) );
