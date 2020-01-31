@@ -3,13 +3,13 @@
 function solveEquation (a, b, c) {
     if (!a) {
         return [-c / b];
-    } //Старший коэффициент должен быть отличен от нуля
+    } // 'a' param must be non-zero
 
     const D = b ** 2 - 4 * a * c;
     
     if (D < 0) {
         return [];
-    } //Уравнение не имеет корней
+    } // equation has no roots
 
     if (!D) {
         return [-b / 2 * a];
