@@ -15,14 +15,11 @@ console.log(findUniqueNumber([1, 1, 2, 0, 2]));
 /////////////////////////////////////////////////
 
 function findUniqueNumber2(arr) {
-    let result = [];
     let filter = {};
     for (let i = 0; i < arr.length; i++) {
-        filter[arr[i]] = '';
+        filter[arr[i]] = arr[i];
     }
-    for (let key in filter) {
-        result[result.length] = Number(key);
-    }
+    let result = Object.values(filter);
     return result;
 }
 
@@ -30,8 +27,8 @@ console.log(findUniqueNumber2([1, 1, 2, 0, 2]));
 
 /////////////////////////////////////////////////
 
-function findUniqueNumber3(arr) {
-    return Array.from(new Set(arr));
+function findUniqueNumber3(arr) { 
+    return Array.from(new Set(arr)); //[...new Set(arr)]
 }
 
 console.log(findUniqueNumber3([1, 1, 2, 0, 2]));
