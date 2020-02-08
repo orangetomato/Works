@@ -1,24 +1,25 @@
 'use strict';
 
 function HashStorageFunc() {
+    let hash = {};
     this.addValue = function(key, value) {
-        this[key] = value;
+        this.hash[key] = value;
     }
 
     this.getValue = function(key) {
-        return this[key];
+        return this.hash[key];
     }
 
     this.deleteValue = function(key) {
-        if (key in this) {
-            delete this[key];
+        if (key in this.hash) {
+            delete this.hash[key];
             return true;
         }
         return false;
     }
 
     this.getKeys = function() {
-        return Object.keys(this);
+        return Object.keys(this.hash);
     }
 }
 
