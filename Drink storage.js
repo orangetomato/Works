@@ -3,23 +3,23 @@
 function HashStorageFunc() {
     let hash = {};
     this.addValue = function(key, value) {
-        this.hash[key] = value;
+        hash[key] = value;
     }
 
     this.getValue = function(key) {
-        return this.hash[key];
+        return hash[key];
     }
 
     this.deleteValue = function(key) {
-        if (key in this.hash) {
-            delete this.hash[key];
+        if (key in hash) {
+            delete hash[key];
             return true;
         }
         return false;
     }
 
     this.getKeys = function() {
-        return Object.keys(this.hash);
+        return Object.keys(hash);
     }
 }
 
