@@ -12,8 +12,7 @@ function HashStorageFunc() {
 
     this.deleteValue = function(key) {
         if (key in hash) {
-            delete hash[key];
-            return true;
+            return delete hash[key];
         }
         return false;
     }
