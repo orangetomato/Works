@@ -20,6 +20,44 @@ function buildForm(arr) {
             div.append(label, input);
         }
 
+        function addSelect() {
+            let select = document.createElement('select');
+            select.name = item.name;
+            div.append(label, select);
+            for (let selectItem of item.variants) {
+                let option = new Option(selectItem.text, selectItem.value);
+                select.append(option);
+            }
+        }
+
+        function addRadio() {
+            div.classList.add('form-radio');
+            div.append(label);
+            for (let radioItem of item.variants) {
+                let input = document.createElement('input');
+                input.type = item.kind;
+                input.name = item.name;
+                input.value = radioItem.value;
+                
+                label = document.createElement('label');
+                label.append(input, radioItem.text);
+                div.append(label);
+            }
+        }
+
+        function addTextarea() {
+            let textarea = document.createElement('textarea');
+            textarea.name = item.name;
+            div.append(label, textarea);
+        }
+
+        function addSubmit() {
+            let input = document.createElement('input');
+            input.type = 'submit';
+            input.value = item.label;
+            div.append(input);
+        }
+
         switch (item.kind) {
             case 'longtext':
                 addInput('text');
@@ -38,41 +76,19 @@ function buildForm(arr) {
                 break;
 
             case 'combo':
-                let select = document.createElement('select');
-                select.name = item.name;
-                div.append(label, select);
-                for (let selectItem of item.variants) {
-                    let option = new Option(selectItem.text, selectItem.value);
-                    select.append(option);
-                }
+                addSelect();
                 break;
 
             case 'radio':
-                div.classList.add('form-radio');
-                div.append(label);
-                for (let radioItem of item.variants) {
-                    let input = document.createElement('input');
-                    input.type = item.kind;
-                    input.name = item.name;
-                    input.value = radioItem.value;
-                    
-                    label = document.createElement('label');
-                    label.append(input, radioItem.text);
-                    div.append(label);
-                }
+                addRadio();
                 break;
 
             case 'memo':
-                let textarea = document.createElement('textarea');
-                textarea.name = item.name;
-                div.append(label, textarea);
+                addTextarea();
                 break;
 
             case 'submit':
-                let input = document.createElement('input');
-                input.type = 'submit';
-                input.value = item.label;
-                div.append(input);
+                addSubmit();
                 break;
         }
         form.append(div);
@@ -105,12 +121,12 @@ buildForm(formDef2);
 buildForm(formDef1);
 
 
-let inputText = document.forms[0].querySelectorAll('[type=text]');
-let inputNumber = document.forms[0].querySelectorAll('[type=number]');
-let inputEmail = document.forms[0].querySelectorAll('[type=email]');
-let textarea = document.forms[0].querySelectorAll('textarea');
+let textInputs = document.forms[0].querySelectorAll('[type=text]');
+let numberInputs = document.forms[0].querySelectorAll('[type=number]');
+let emailInputs = document.forms[0].querySelectorAll('[type=email]');
+let textareas = document.forms[0].querySelectorAll('textarea');
 
-let fieldsList = [...inputText, ...inputNumber, ...inputEmail, ...textarea];
+let fieldsList = [...textInputs, ...numberInputs, ...emailInputs, ...textareas];
 
 function validate(field) {
     if (!field.value) {
@@ -137,7 +153,7 @@ fieldsList.forEach(function(field) {
 let submit = document.forms[0].querySelector('[type=submit]');
 submit.addEventListener('click', function(evt) {
     fieldsList.forEach(function(field) {
-       if (validate(field) === false) {
+       if (!validate(field)) {
            evt.preventDefault();
            document.querySelector('.invalid').focus();
         }
