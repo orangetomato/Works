@@ -1,0 +1,41 @@
+form {
+    width: 550px;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    display: grid;
+    grid-template-columns: 150px 400px;
+	margin-bottom: 5px;
+}
+
+.form-radio {
+	grid-template-columns: 150px auto auto auto;
+}
+
+input[type="number"] {
+	width: 25%;
+}
+
+input[type="email"] {
+    width: 50%;
+}
+
+select {
+    width: 50%;
+}
+
+textarea {
+    height: 50px;
+}
+  
+.invalid {
+    border: 1px solid red;
+}
+
+.error-message {
+    grid-column-start: 2;
+    font-size: 11px;
+    padding: 0;
+    margin: 0;
+}
