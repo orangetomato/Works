@@ -17,22 +17,22 @@ function createClock() {
 
 function createCircle(index) {
     let angle = Math.PI / 6 * index;
-    let distance = clockRadius * 0.8;
+    let length = clockRadius * 0.8;
     let circle = document.createElementNS(SVG_NS, 'circle');
     circle.setAttribute('stroke', 'black');
     circle.setAttribute('fill', 'green');
     circle.setAttribute('r', clockRadius / 10);
-    circle.setAttribute('cx', clockCenterX + distance * Math.sin(angle));
-    circle.setAttribute('cy', clockCenterY - distance * Math.cos(angle));
+    circle.setAttribute('cx', clockCenterX + length * Math.sin(angle));
+    circle.setAttribute('cy', clockCenterY - length * Math.cos(angle));
     return circle;
 }
 
 function createNumber(index) {
     let angle = Math.PI / 6 * index;
-    let distance = clockRadius * 0.8;
+    let length = clockRadius * 0.8;
     let number = document.createElementNS(SVG_NS, 'text');
-    number.setAttribute('x', clockCenterX + distance * Math.sin(angle));
-    number.setAttribute('y', clockCenterY - distance * Math.cos(angle));
+    number.setAttribute('x', clockCenterX + length * Math.sin(angle));
+    number.setAttribute('y', clockCenterY - length * Math.cos(angle));
     number.textContent = index;
     number.setAttribute('text-anchor', 'middle');
     number.setAttribute('dominant-baseline', 'central');
