@@ -5,17 +5,19 @@ let imageList = document.querySelectorAll('.container-item');
 
 for (let i = imageList.length - 1; i >= 0; i--) {
     let image = imageList[i];
-    image.style.left = `${image.getBoundingClientRect().left}px`;
-    image.style.top = `${image.getBoundingClientRect().top}px`;
+    let imageCoords = image.getBoundingClientRect();
+    image.style.left = `${imageCoords.left}px`;
+    image.style.top = `${imageCoords.top}px`;
     image.style.position = 'absolute';
 
     image.addEventListener('mousedown', function(evt) {
-        evt.preventDefault();    
+        evt.preventDefault();
         image.classList.add('pressed');
-        let shiftX = evt.clientX - image.getBoundingClientRect().left;
-        let shiftY = evt.clientY - image.getBoundingClientRect().top;
+        let imageCoords = image.getBoundingClientRect();
+        let shiftX = evt.clientX - imageCoords.left;
+        let shiftY = evt.clientY - imageCoords.top;
         container.append(image);
-        
+
         function moveAt(pageX, pageY) {
             image.style.left = `${pageX - shiftX}px`;
             image.style.top = `${pageY - shiftY}px`;
@@ -36,7 +38,7 @@ for (let i = imageList.length - 1; i >= 0; i--) {
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
     });
-    
+
     image.ondragstart = function() {
         return false;
     }
