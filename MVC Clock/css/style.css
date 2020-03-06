@@ -1,0 +1,17 @@
+.main-wrapper {
+    display: flex;
+}
+
+.wrapper {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-block {
+    align-self: center;
+
+    display: flex;
+    align-items: center;
+}
