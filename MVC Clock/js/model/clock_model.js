@@ -1,18 +1,7 @@
-import SvgClockView from '../views/svg_view.js';
-import CanvasClockView from '../views/canvas_view.js';
-
 export default class ClockModel {
-    constructor(nodeType, nodeSize, city, timezone) {
+    constructor(view, timezone) {
+        this.view = view;
         this._timezone = timezone;
-        
-        switch(nodeType) {
-            case 'svg':
-                this.view = new SvgClockView(nodeSize, city, timezone);
-                break;
-            case 'canvas':
-                this.view = new CanvasClockView(nodeSize, city, timezone);
-                break;
-        }
     }
 
     updateTime() {
