@@ -1,1 +1,0 @@
-export default class GameControls{constructor(a){this.model=a,this.addListeners()}addListeners(){document.addEventListener("keydown",this.model.keydownHandler.bind(this.model)),document.addEventListener("keyup",this.model.keyupHandler.bind(this.model))}}
