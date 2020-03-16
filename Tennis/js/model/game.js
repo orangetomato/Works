@@ -20,8 +20,8 @@ export default class Game {
             xPos: this._field.width / 2,
             yPos: this._field.height / 2,
             color: 'red',
-            xSpeed: 3,
-            ySpeed: 1
+            xSpeed: 4.5,
+            ySpeed: 1.5
         }
 
         class Bat {
@@ -31,7 +31,7 @@ export default class Game {
                 this.yPos = yPos;
                 this.width = 10;
                 this.height = 100;
-                this.ySpeed = 10;
+                this.speed = 10;
                 this.score = 0;
                 this.isMoveUp = false;
                 this.isMoveDown = false;
@@ -46,19 +46,21 @@ export default class Game {
     }
 
     keydownHandler(evt) {
-        evt.preventDefault();
-
         switch(evt.keyCode) {
             case this._shiftKeycode:
+                evt.preventDefault();
                 this._leftBat.isMoveUp = true;
                 break;
             case this._ctrlKeycode:
+                evt.preventDefault();
                 this._leftBat.isMoveDown = true;
                 break;
             case this._upArrowKeycode:
+                evt.preventDefault();
                 this._rightBat.isMoveUp = true;
                 break;
             case this._downArrowKeycode:
+                evt.preventDefault();
                 this._rightBat.isMoveDown = true;
                 break;
         }
@@ -67,8 +69,6 @@ export default class Game {
     }
 
     keyupHandler(evt) {
-        evt.preventDefault();
-
         switch(evt.keyCode) {
             case this._shiftKeycode:
                 this._leftBat.isMoveUp = false;
@@ -83,13 +83,11 @@ export default class Game {
                 this._rightBat.isMoveDown = false;
                 break;
         }
-
-        this.checkBatPosition(this._field, this._ball, this._leftBat, this._rightBat);
     }
 
     checkBatPosition(field, ball, leftBat, rightBat) {
         if (leftBat.isMoveUp) {
-            leftBat.yPos -= leftBat.ySpeed;
+            leftBat.yPos -= leftBat.speed;
 
             if (leftBat.yPos < field.yPos) {
                 leftBat.yPos = field.yPos;
@@ -97,7 +95,7 @@ export default class Game {
         }
 
         if (rightBat.isMoveUp) {
-            rightBat.yPos -= rightBat.ySpeed;
+            rightBat.yPos -= rightBat.speed;
 
             if (rightBat.yPos < field.yPos) {
                 rightBat.yPos = field.yPos;
@@ -105,7 +103,7 @@ export default class Game {
         }
 
         if (leftBat.isMoveDown) {
-            leftBat.yPos += leftBat.ySpeed;
+            leftBat.yPos += leftBat.speed;
 
             if (leftBat.yPos + leftBat.height > field.height) {
                 leftBat.yPos = field.height - leftBat.height;
@@ -113,7 +111,7 @@ export default class Game {
         }
 
         if (rightBat.isMoveDown) {
-            rightBat.yPos += rightBat.ySpeed;
+            rightBat.yPos += rightBat.speed;
 
             if (rightBat.yPos + rightBat.height > field.height) {
                 rightBat.yPos = field.height - rightBat.height;
