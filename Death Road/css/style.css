@@ -1,0 +1,87 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+}
+
+.section {
+    width: 600px;
+    height: 600px;
+    background-color: lightgray;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section--closed {
+    display: none;
+}
+
+.headline {
+    margin: 0;
+}
+
+.text {
+    margin: 0;
+}
+
+.button {
+    padding: 0;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid black;
+    width: 100px;
+    height: 50px;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+    background-color: red;
+    color: white;
+    outline: 1px solid white;
+}
+
+.button-block {
+    height: 400px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.game {
+    position: relative;
+}
+
+.game__text {
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    color: black;
+}
+
+.game__text--takes {
+    left: 40px;
+}
+
+.game__text--time {
+    left: 180px;
+}
+
+.game__text--level {
+    right: 180px;
+}
+
+.game__text--points {
+    right: 40px;
+}
+
+.result__text {
+    font-size: 20px;
+    line-height: 20px;
+}

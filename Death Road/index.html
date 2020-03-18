@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Death Road</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <section class="menu section">
+        <h1 class="menu__headline">Death Road</h1>
+        <div class="menu__button-block button-block">
+            <button class="menu__button menu__button--start button" type="button">Start Game</button>
+            <button class="menu__button menu__button--rules button" type="button">Rules</button>
+            <button class="menu__button menu__button--high-score button" type="button">High Score</button>
+            <button class="menu__button menu__button--settings button" type="button">Settings</button>
+        </div>
+    </section>
+
+    <section class="game section section--closed">
+        <span class="game__text game__text--takes">Takes: <span class="game__takes"></span></span>
+        <span class="game__text game__text--time">Time: <span class="game__time"></span></span>
+        <span class="game__text game__text--level">Level: <span class="game__level"></span></span>
+        <span class="game__text game__text--points">Points: <span class="game__points"></span></span>
+        <canvas class="game__canvas"></canvas>
+    </section>
+
+    <section class="rules section section--closed">
+        <h2 class="rules__headline headline">Rules</h2>
+        <p class="rules__text text">Here will be some game instructions in the near future...</p>
+        <button class="rules__button back-to-menu-button button" type="button">Back</button>
+    </section>
+
+    <section class="high-score section section--closed">
+        <h2 class="high-score__headline headline">High Score</h2>
+        <p class="high-score__text text">Here will be a high-score table in the near future...</p>
+        <button class="high-score__button back-to-menu-button button" type="button">Back</button>
+    </section>
+
+    <section class="settings section section--closed">
+        <h2 class="settings__headline headline">Settings</h2>
+        <p class="settings__text text">Here will be game settings in the near future...</p>
+        <div class="settings__button-block button-block">
+            <button class="settings__button settings__button--music button" type="button">Music: on/off</button>
+            <button class="settings__button back-to-menu-button button" type="button">Back</button>
+        </div>
+    </section>
+
+    <section class="result section section--closed">
+        <h2 class="result__headline headline">Your Result</h2>
+        <span class="result__text text"></span>
+        <form class="result__form">
+            <input class="form__input" type="text" placeholder="Name" required>
+            <button class="form__button" type="submit">Submit</button>
+        </form>
+        <button class="result__button result__button--again button" type="button">Play Again</button>
+        <button class="result__button back-to-menu-button button" type="button">Back</button>
+    </section>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
