@@ -1,9 +1,5 @@
 export default class MenuView {
-    constructor(width, height) {
-        const canvas = document.querySelector('.game__canvas');
-        canvas.setAttribute('width', width);
-        canvas.setAttribute('height', height);
-
+    constructor() {
         this._result = document.querySelector('.result');
         this._menu = document.querySelector('.menu');
         this._gameSection = document.querySelector('.game');

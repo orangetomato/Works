@@ -35,14 +35,13 @@ export default class Game {
         let color = 'lightgreen';
         let radius = grid / 2;
         let yPos = canvasHeight - grid * 11 - 1 + grid / 2;
-
         for (let i = 0; i < 5; i++) {
             let xPos = i * (grid * 2.5) + radius + grid / 2;
             this._finishZones[i] = new FinishZone(xPos, yPos, radius, color);
         }
 
         this._frog = new Frog(canvasWidth * 0.5 - grid * 0.25, canvasHeight - grid * 0.75 + 1, grid * 0.5, grid * 0.5, 'green', grid, 3, 0, 1, canvasWidth, canvasHeight, grid);
-
+        
         this._cars = [];
         let carIndex = 0;
         //Row 2
@@ -134,6 +133,37 @@ export default class Game {
     generateColor() {
         return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     };
+
+    touchstartHandler(button) {
+        const upButton = document.querySelector('.game__button--up');
+        const downButton = document.querySelector('.game__button--down');
+        const leftButton = document.querySelector('.game__button--left');
+        const rightButton = document.querySelector('.game__button--right');
+
+        if (button === upButton ||
+            button === downButton ||
+            button === leftButton ||
+            button === rightButton) {
+
+            if (button === leftButton) {
+                this._frog.moveLeft();
+            }
+
+            if (button === upButton) {
+                this._frog.moveForward();
+            }
+
+            if (button === rightButton) {
+                this._frog.moveRight();
+            }
+
+            if (button === downButton) {
+                this._frog.moveBack();
+            }
+        
+            this.checkFrogPosition(this._field, this._road, this._river, this._finishRow, this._finishZones, this._cars, this._logs, this._frog);
+        }
+    }
 
     keydownHandler(evt) {
         if (evt.keyCode === this._escKeycode) {

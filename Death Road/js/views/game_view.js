@@ -1,6 +1,8 @@
 export default class GameView {
-    constructor() {
+    constructor(width, height) {
         const canvas = document.querySelector('.game__canvas');
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', height);
         this._ctx = canvas.getContext('2d');
     }
 

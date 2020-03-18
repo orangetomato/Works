@@ -7,8 +7,8 @@ import MenuListeners from './controllers/menu_listeners.js';
 const canvasWidth = 600;
 const canvasHeight = 600;
 
-const menuView = new MenuView(canvasWidth, canvasHeight);
-const view = new GameView();
+const menuView = new MenuView();
+const view = new GameView(canvasWidth, canvasHeight);
 const model = new Game(menuView, view, canvasWidth, canvasHeight);
 const controller = new GameControls(model);
 const menuListeners = new MenuListeners(model, menuView);
