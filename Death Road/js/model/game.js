@@ -1,7 +1,6 @@
 import Field from './objects/field.js';
 import Road from './objects/road.js';
 import River from './objects/river.js';
-// import FinishRow from './objects/finish_row.js';
 import FinishZone from './objects/finish_zone.js';
 import Frog from './objects/frog.js';
 import Car from './objects/car.js';
@@ -95,12 +94,11 @@ export default class Game {
             this._logs[logIndex] = new Log(i * (grid * 4.5), canvasHeight - grid * 11 + 6, grid * 2, grid - 12, 'SaddleBrown', -1);
             logIndex++;
         }
-
-        console.log(this._frog.takes);//
     }
 
     startTimer() {
         this._intervalId = setInterval(this.changeTime.bind(this, this._frog), 1000);
+        console.log('Start timer');//
     }
 
     changeTime(frog) {
@@ -122,7 +120,6 @@ export default class Game {
             return item;
         });
 
-        console.log(this._logs);//
         this._logs = this._logs.map(function(item) {
             item.speed > 0 ? item.speed -= (lastLevel - 1) / 2 : item.speed += (lastLevel - 1) / 2;
             return item;
@@ -132,9 +129,9 @@ export default class Game {
             item.color = 'lightgreen';
             return item;
         });
-        console.log(this._logs);//
 
         clearInterval(this._intervalId);
+        console.log(`Stop timer`);//
         this._frog.resetPosition();
         this._frog.takes = 3;
         this._frog.points = 0;
@@ -149,6 +146,7 @@ export default class Game {
         this.view.updateScore(this._frog);
         this.view.updateTime(this._frog);
         this.changeObstaclePosition(this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog);
+        console.log(`Start animation`);//
         this.startTimer();
 
         this.menuView.hideSection();
@@ -158,14 +156,18 @@ export default class Game {
     }
 
     pauseGame() {
-        console.log(this._requestId);//
+        console.log(`requestId ${this._requestId}`);//
         if (this._requestId) {
             cancelAnimationFrame(this._requestId);
+            console.log(`Stop animation`);//
             this._requestId = null;
+
             clearInterval(this._intervalId);
+            console.log(`Stop timer`);//
             this._frog.step = 0;
         } else {
             this._requestId = requestAnimationFrame(this.changeObstaclePosition.bind(this, this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog));
+            console.log(`Start animation`);//
             this.startTimer();
             this._frog.step = 50;
         }
@@ -174,6 +176,7 @@ export default class Game {
     endGame(frog) {
         console.log('Takes are over');//
         clearInterval(this._intervalId);
+        console.log('Stop timer');//
         this.menuView.hideSection(this._requestId);
         this.menuView.showResult(frog.points);
     }
@@ -361,7 +364,7 @@ export default class Game {
             let count = 1;//
 
             for (let car of cars) {
-                console.log('Car number' + count);//
+                console.log(`Car number: ${count}`);//
 
                 if (this.hasIntersection(frog, car)) {
                     console.log('Collision');//
@@ -401,7 +404,7 @@ export default class Game {
             }
 
             if (!isSafe) {
-                console.log('Death by drowning');//
+                console.log('Drowning');//
                 this.reduceTakes(frog);
             }
         }
@@ -420,10 +423,10 @@ export default class Game {
         let obstacleTop = obstacle.yPos;
         let obstacleBottom = obstacle.yPos + obstacle.height;
 
-        console.log(`frogLeft >= ${obstacle.name}Right intersects ${!(frogLeft >= obstacleRight)} ${frogLeft} ${obstacleRight}`);//
-        console.log(`frogRight <= ${obstacle.name}Left intersects ${!(frogRight <= obstacleLeft)} ${frogRight} ${obstacleLeft}`);//
-        console.log(`frogTop >= ${obstacle.name}Bottom intersects ${!(frogTop >= obstacleBottom)} ${frogTop} ${obstacleBottom}`);//
-        console.log(`frogBottom <= ${obstacle.name}Top intersects ${!(frogBottom <= obstacleTop)} ${frogBottom} ${obstacleTop}`);//
+        // console.log(`frogLeft >= ${obstacle.name}Right intersects ${!(frogLeft >= obstacleRight)} ${frogLeft} ${obstacleRight}`);//
+        // console.log(`frogRight <= ${obstacle.name}Left intersects ${!(frogRight <= obstacleLeft)} ${frogRight} ${obstacleLeft}`);//
+        // console.log(`frogTop >= ${obstacle.name}Bottom intersects ${!(frogTop >= obstacleBottom)} ${frogTop} ${obstacleBottom}`);//
+        // console.log(`frogBottom <= ${obstacle.name}Top intersects ${!(frogBottom <= obstacleTop)} ${frogBottom} ${obstacleTop}`);//
         return !(frogLeft >= obstacleRight || frogRight <= obstacleLeft || frogTop >= obstacleBottom || frogBottom <= obstacleTop);
     }
 
@@ -470,10 +473,12 @@ export default class Game {
         this.view.update(field, road, river, finishZones, cars, logs, frog);
         this.checkFrogPosition(field, road, river, finishZones, cars, logs, frog);
 
-        console.log(frog.takes);//
+        console.log(`Takes left: ${frog.takes}`);//
 
         if (frog.takes) {
             this._requestId = requestAnimationFrame(this.changeObstaclePosition.bind(this, field, road, river, finishZones, cars, logs, frog));
-        }
+        } else {//
+            console.log(`Stop animation`);//
+        }//
     }
 }
