@@ -1,0 +1,132 @@
+html, 
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+    font-size: 3vh;
+    color: black;
+}
+
+.section {
+    width: 600px;
+    height: 100%;
+    margin: auto;
+    background-color: lightgray;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section--closed {
+    display: none;
+}
+
+.headline {
+    margin: 0;
+}
+
+.text {
+    margin: 0;
+}
+
+.button-block {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button {
+    padding: 0;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid black;
+    width: 25%;
+    height: 12.5%;
+}
+
+.button:hover,
+.button:focus,
+.button:active {
+    background-color: red;
+    color: white;
+    outline: 1px solid white;
+}
+
+.game {
+    justify-content: flex-start;
+}
+
+.game__text-block {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.game__text {
+    margin: 0;
+}
+
+.game__canvas {
+    width: 100%;
+}
+
+.game__button-block {
+    display: none;
+}
+
+@media (max-width: 1200px) {
+    .section {
+        width: 100%;
+        height: 100%;
+    }
+
+    .game__button-block {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        opacity: 0.3;
+    }
+
+    .game__game-stop-block {
+        align-self: center;
+    }
+
+    .game__control-block {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game__wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        margin: -10px;
+    }
+
+    .game__button {
+        padding: 0;
+        width: 7vh;
+        height: 7vh;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 50%;
+    }
+
+    .game__button:active {
+        background-color: red;
+        color: white;
+    }
+}
