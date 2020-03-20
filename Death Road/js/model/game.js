@@ -96,11 +96,10 @@ export default class Game {
             logIndex++;
         }
 
-        console.log(this._frog.takes);
+        console.log(this._frog.takes);//
     }
 
     startTimer() {
-        this.changeTime(this._frog);
         this._intervalId = setInterval(this.changeTime.bind(this, this._frog), 1000);
     }
 
@@ -108,20 +107,10 @@ export default class Game {
         frog.time -= 1;
 
         if (!frog.time) {
-            console.log('Time is over');
-            navigator.vibrate(1000);
-            frog.takes--;
-            frog.time = 30;
-
-            if (!frog.takes) {
-                console.log('Takes are over');
-                this.menuView.hideSection(this._requestId);
-                this.menuView.showResult(frog.points);
-            }
-
-            this.view.updateScore(frog);
-            frog.resetPosition();
+            console.log('Time is over');//
+            this.reduceTakes(frog);
         }
+
         this.view.updateTime(frog);
     }
 
@@ -133,7 +122,7 @@ export default class Game {
             return item;
         });
 
-        console.log(this._logs);
+        console.log(this._logs);//
         this._logs = this._logs.map(function(item) {
             item.speed > 0 ? item.speed -= (lastLevel - 1) / 2 : item.speed += (lastLevel - 1) / 2;
             return item;
@@ -143,7 +132,7 @@ export default class Game {
             item.color = 'lightgreen';
             return item;
         });
-        console.log(this._logs);
+        console.log(this._logs);//
 
         clearInterval(this._intervalId);
         this._frog.resetPosition();
@@ -159,7 +148,7 @@ export default class Game {
         this.view.update(this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog);
         this.view.updateScore(this._frog);
         this.view.updateTime(this._frog);
-        this.changeCarPosition(this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog);
+        this.changeObstaclePosition(this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog);
         this.startTimer();
 
         this.menuView.hideSection();
@@ -169,29 +158,79 @@ export default class Game {
     }
 
     pauseGame() {
-        console.log(this._requestId);
+        console.log(this._requestId);//
         if (this._requestId) {
             cancelAnimationFrame(this._requestId);
             this._requestId = null;
             clearInterval(this._intervalId);
             this._frog.step = 0;
         } else {
-            this._requestId = requestAnimationFrame(this.changeCarPosition.bind(this, this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog));
+            this._requestId = requestAnimationFrame(this.changeObstaclePosition.bind(this, this._field, this._road, this._river, this._finishZones, this._cars, this._logs, this._frog));
             this.startTimer();
             this._frog.step = 50;
         }
     }
 
-    endGame() {
-        console.log('Takes are over');
+    endGame(frog) {
+        console.log('Takes are over');//
         clearInterval(this._intervalId);
         this.menuView.hideSection(this._requestId);
         this.menuView.showResult(frog.points);
     }
 
+    reduceTakes(frog) {
+        navigator.vibrate(1000);
+        frog.takes--;
+
+        if (!frog.takes) {
+            this.endGame(frog);
+            return;
+        }
+
+        frog.time = 30;
+        this.view.updateScore(frog);
+        frog.resetPosition();
+    }
+
     generateColor() {
         return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-    };
+    }
+
+    uplevel(finishZones, cars, logs, frog) {
+        finishZones = finishZones.map(function(item) {
+            item.color = 'lightgreen';
+            return item;
+        });
+        
+        cars = cars.map(function(item) {
+            item.speed > 0 ? item.speed += 0.5 : item.speed -= 0.5;
+            return item;
+        });
+        
+        logs = logs.map(function(item) {
+            item.speed > 0 ? item.speed += 0.5 : item.speed -= 0.5;
+            return item;
+        });
+        
+        frog.level++;
+        frog.points += 10;
+        frog.time = 30;
+        this.view.updateScore(frog);
+        this.view.updateTime(frog);
+    }
+
+    
+    award(frog, finishZone) {
+        // frog.xPos = finishZone.xPos - finishZone.radius / 2;
+        // frog.yPos = finishZone.yPos - finishZone.radius / 2;
+        navigator.vibrate(100);
+        finishZone.color = 'blue';
+        frog.points += frog.time;
+        frog.time = 30;
+        frog.resetPosition();
+        this.view.updateScore(frog);
+        this.view.updateTime(frog);
+    }
 
     touchstartHandler(button) {
         const upButton = document.querySelector('.game__button--up');
@@ -319,33 +358,21 @@ export default class Game {
         }
 
         if (this.hasIntersection(frog, road)) {
-            let count = 1;
+            let count = 1;//
 
             for (let car of cars) {
-                console.log('Car number' + count);
+                console.log('Car number' + count);//
 
                 if (this.hasIntersection(frog, car)) {
-                    console.log('Collision');
+                    console.log('Collision');//
                     car.color = 'red';
-                    navigator.vibrate(1000);
-                    frog.takes--;
-                    frog.time = 30;
-
-                    if (!frog.takes) {
-                        console.log('Takes are over');
-                        this.menuView.hideSection(this._requestId);
-                        this.menuView.showResult(frog.points);
-                    }
-
-                    this.view.updateScore(frog);
-                    frog.resetPosition();
+                    this.reduceTakes(frog);
                     break;
                 }
 
-                count++;
+                count++;//
             }
         }
-       
         
         if (this.hasIntersection(frog, river)) {
             let isSafe = false;
@@ -359,61 +386,23 @@ export default class Game {
             }
             
             if (frog.yPos < river.yPos + 50) {
+
                 for (let finishZone of finishZones) {
 
                     if (this.hasIntersection(frog, finishZone) && finishZone.color !== 'blue') {
                         isSafe = true;
-                        // frog.xPos = finishZone.xPos - finishZone.radius / 2;
-                        // frog.yPos = finishZone.yPos - finishZone.radius / 2;
-                        navigator.vibrate(100);
-                        finishZone.color = 'blue';
-                        frog.points += frog.time;
-                        frog.time = 30;
-                        frog.resetPosition();
-                        this.view.updateScore(frog);
-                        this.view.updateTime(frog);
+                        this.award(frog, finishZone);
                     }
                         
                     if (finishZones.every(item => item.color === 'blue')) {
-
-                        finishZones = finishZones.map(function(item) {
-                            item.color = 'lightgreen';
-                            return item;
-                        });
-                        
-                        cars = cars.map(function(item) {
-                            item.speed > 0 ? item.speed += 0.5 : item.speed -= 0.5;
-                            return item;
-                        });
-                        
-                        logs = logs.map(function(item) {
-                            item.speed > 0 ? item.speed += 0.5 : item.speed -= 0.5;
-                            return item;
-                        });
-                        
-                        frog.level++;
-                        frog.points += 10;
-                        frog.time = 30;
-                        this.view.updateScore(frog);
-                        this.view.updateTime(frog);
+                        this.uplevel(finishZones, cars, logs, frog);
                     }
                 }
             }
 
             if (!isSafe) {
-                console.log('Death by drowning');
-                navigator.vibrate(1000);
-                frog.takes--;
-                frog.time = 30;
-
-                if (!frog.takes) {
-                    console.log('Takes are over');
-                    this.menuView.hideSection(this._requestId);
-                    this.menuView.showResult(frog.points);
-                }
-
-                this.view.updateScore(frog);
-                frog.resetPosition();
+                console.log('Death by drowning');//
+                this.reduceTakes(frog);
             }
         }
 
@@ -431,14 +420,14 @@ export default class Game {
         let obstacleTop = obstacle.yPos;
         let obstacleBottom = obstacle.yPos + obstacle.height;
 
-        console.log(`frogLeft >= ${obstacle.name}Right intersects ${!(frogLeft >= obstacleRight)} ${frogLeft} ${obstacleRight}`);
-        console.log(`frogRight <= ${obstacle.name}Left intersects ${!(frogRight <= obstacleLeft)} ${frogRight} ${obstacleLeft}`);
-        console.log(`frogTop >= ${obstacle.name}Bottom intersects ${!(frogTop >= obstacleBottom)} ${frogTop} ${obstacleBottom}`);
-        console.log(`frogBottom <= ${obstacle.name}Top intersects ${!(frogBottom <= obstacleTop)} ${frogBottom} ${obstacleTop}`);
+        console.log(`frogLeft >= ${obstacle.name}Right intersects ${!(frogLeft >= obstacleRight)} ${frogLeft} ${obstacleRight}`);//
+        console.log(`frogRight <= ${obstacle.name}Left intersects ${!(frogRight <= obstacleLeft)} ${frogRight} ${obstacleLeft}`);//
+        console.log(`frogTop >= ${obstacle.name}Bottom intersects ${!(frogTop >= obstacleBottom)} ${frogTop} ${obstacleBottom}`);//
+        console.log(`frogBottom <= ${obstacle.name}Top intersects ${!(frogBottom <= obstacleTop)} ${frogBottom} ${obstacleTop}`);//
         return !(frogLeft >= obstacleRight || frogRight <= obstacleLeft || frogTop >= obstacleBottom || frogBottom <= obstacleTop);
     }
 
-    changeCarPosition(field, road, river, finishZones, cars, logs, frog) {
+    changeObstaclePosition(field, road, river, finishZones, cars, logs, frog) {
         if (this._requestId) {
             cancelAnimationFrame(this._requestId);
         }
@@ -481,10 +470,10 @@ export default class Game {
         this.view.update(field, road, river, finishZones, cars, logs, frog);
         this.checkFrogPosition(field, road, river, finishZones, cars, logs, frog);
 
-        console.log(frog.takes);
+        console.log(frog.takes);//
 
         if (frog.takes) {
-            this._requestId = requestAnimationFrame(this.changeCarPosition.bind(this, field, road, river, finishZones, cars, logs, frog));
+            this._requestId = requestAnimationFrame(this.changeObstaclePosition.bind(this, field, road, river, finishZones, cars, logs, frog));
         }
     }
 }
