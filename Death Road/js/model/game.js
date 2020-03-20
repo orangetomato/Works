@@ -100,7 +100,7 @@ export default class Game {
     }
 
     startTimer() {
-        this.changeTime.bind(this, this._frog);
+        this.changeTime(this._frog);
         this._intervalId = setInterval(this.changeTime.bind(this, this._frog), 1000);
     }
 
@@ -165,7 +165,7 @@ export default class Game {
         this.menuView.hideSection();
         this.menuView.showGame();
 
-        console.log('Game has been started');
+        console.log('Game started');
     }
 
     pauseGame() {
@@ -180,6 +180,13 @@ export default class Game {
             this.startTimer();
             this._frog.step = 50;
         }
+    }
+
+    endGame() {
+        console.log('Takes are over');
+        clearInterval(this._intervalId);
+        this.menuView.hideSection(this._requestId);
+        this.menuView.showResult(frog.points);
     }
 
     generateColor() {
