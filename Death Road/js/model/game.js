@@ -100,6 +100,7 @@ export default class Game {
     }
 
     startTimer() {
+        this.changeTime.bind(this, this._frog);
         this._intervalId = setInterval(this.changeTime.bind(this, this._frog), 1000);
     }
 
@@ -357,6 +358,7 @@ export default class Game {
                         isSafe = true;
                         // frog.xPos = finishZone.xPos - finishZone.radius / 2;
                         // frog.yPos = finishZone.yPos - finishZone.radius / 2;
+                        navigator.vibrate(100);
                         finishZone.color = 'blue';
                         frog.points += frog.time;
                         frog.time = 30;
