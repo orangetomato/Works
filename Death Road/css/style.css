@@ -1,0 +1,223 @@
+html, 
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+    font-size: 3vh;
+    color: black;
+    display: flex;
+}
+
+.section {
+    width: 40%;
+    height: 100%;
+    margin: auto;
+    background-color: lightgray;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section--closed {
+    display: none;
+}
+
+.headline {
+    margin: 0;
+    font-size: 72px;
+}
+
+.text {
+    margin: 0;
+}
+
+.button-block {
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button {
+    padding: 0;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid black;
+    width: 200px;
+    height: 100px;
+    font-size: 36px;
+    line-height: 36px;
+}
+
+.button:hover,
+.button:focus {
+    background-color: red;
+    color: white;
+    outline: 1px solid white;
+}
+
+.button--selected {
+    background-color: red;
+    color: white;
+}
+
+/* .game {
+    justify-content: flex-start;
+} */
+
+.game__text-block {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.game__text {
+    margin: 0;
+}
+
+.game__canvas {
+    width: 100%;
+}
+
+
+.game__button-block {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.3;
+}
+
+.game__game-stop-block {
+    align-self: center;
+}
+
+.game__control-block {
+    display: none;
+}
+
+.game__wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin: -10px;
+}
+
+.game__button {
+    cursor: pointer;
+    padding: 0;
+    width: 7vh;
+    height: 7vh;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.game__button:active,
+.game__button--selected {
+    background-color: red;
+    color: white;
+}
+
+.game__button--selected:active {
+    background-color: white;
+    color: black;
+}
+
+
+.result__text {
+    font-size: 96px;
+    line-height: 96px;
+}
+
+.result__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__input {
+    padding: 0;
+    width: 400px;
+    height: 50px;
+    margin-bottom: 50px;
+    border: 2px solid black;
+    background-color: lightgray;
+    font-size: 40px;
+    line-height: 40px;
+    outline: none;
+    text-align: center;
+}
+
+.form__input:hover,
+.form__input:focus {
+    background-color: white;
+}
+
+.form__button {
+    padding: 0;
+    cursor: pointer;
+    width: 200px;
+    height: 50px;
+    border: 2px solid black;
+    background-color: lightgray;
+    font-size: 40px;
+    line-height: 40px;
+    outline: none;
+}
+
+.form__button:hover,
+.form__button:focus {
+    background-color: white;
+}
+
+.settings__button--vibration {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .section {
+        width: 100%;
+        height: 100%;
+    }
+
+    .headline {
+        font-size: 9vh;
+    }
+
+    .button {
+        width: 25%;
+        height: 12.5%;
+        font-size: 100%;
+        line-height: 100%;
+    }
+
+    .game__control-block {
+        display: flex;
+        width: 40%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game__button:active {
+        background-color: red;
+        color: white;
+    }
+
+    .settings__button--vibration {
+        display: block;
+    }
+}
