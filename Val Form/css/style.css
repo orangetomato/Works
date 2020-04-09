@@ -35,7 +35,7 @@ form {
 }
 
 .invalid {
-    border: 1px solid red;
+    outline: 2px solid red;
 }
 
 .error-message {
