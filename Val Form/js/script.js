@@ -24,6 +24,7 @@ function buildForm(arr) {
             let select = document.createElement('select');
             select.name = item.name;
             div.append(label, select);
+            select.append(new Option('Сделайте выбор', 0));
             for (let selectItem of item.variants) {
                 let option = new Option(selectItem.text, selectItem.value);
                 select.append(option);
@@ -124,15 +125,19 @@ buildForm(formDef1);
 
 
 let textInputs = document.forms[0].querySelectorAll('[type=text]');
-let numberInputs = document.forms[0].querySelectorAll('[type=number]');
-let emailInputs = document.forms[0].querySelectorAll('[type=email]');
-let radioInputs = document.forms[0].querySelectorAll('[type=radio]');
-let textareas = document.forms[0].querySelectorAll('textarea');
-let fieldsList = [...textInputs, ...numberInputs, ...emailInputs, ...radioInputs, ...textareas];
+let numberInput = document.forms[0].querySelector('[type=number]');
+let emailInput = document.forms[0].querySelector('[type=email]');
+let select = document.forms[0].querySelector('select');
+let radioButtons = [...document.forms[0].querySelectorAll('[type=radio]')];
+let checkbox = document.forms[0].querySelector('[type=checkbox]');
+let textarea = document.forms[0].querySelector('textarea');
+
+let fieldsList = [...textInputs, numberInput, emailInput, select, ...radioButtons, checkbox, textarea];
+let radioSection = document.forms[0].querySelector('.radio-section');
 let isValid;
 let message;
 
-function validate(field) {
+function switchMessage(field) {
     if (!isValid) {
         field.classList.add('invalid');
         if (!field.nextElementSibling) {
@@ -153,73 +158,72 @@ function checkLength(field) {
     } else {
         isValid = true;
     }
-    validate(field);
 }
 
-function checkNumberInput(field) {
-    if (field.type === 'number' && (field.value < 0 || field.value === '')) {
+function checkNumbers(field) {
+    if (field.value < 0 || field.value === '') {
         isValid = false;
-        message = 'Cannot be < 0';
+        message = 'Should be a positive number or 0';
     } else {
         isValid = true;
     }
-    numberInputs.forEach(function(input) {
-        validate(input);
-    });
 }
 
-function checkEmailInput(field) {
-    if (field.type === 'email' && !field.value.match(/@\w/)) {
+function checkEmail(field) {
+    if (!field.value.match(/@\w/)) {
         isValid = false;
-        message = 'Must include @ and domain part';
+        message = 'Must include @ and a domain part';
     } else {
         isValid = true;
     }
-    emailInputs.forEach(function(input) {
-        validate(input);
-    });
 }
 
-function checkRadioInput(field) {
-    let checkedItems = document.forms[0].querySelectorAll('input[type=radio]:checked');
-    if (field.type === 'radio' && !checkedItems.length) {
+function checkOptions(field) {
+    let isChecked = radioButtons.some(button => button.checked);
+    if ( (field.type === 'select-one' && !field.options.selectedIndex) || 
+         (field.type === 'radio' && !isChecked) || 
+         (field.type === 'checkbox' && !field.checked) ) {
         isValid = false;
         message = 'Choose an option';
     } else {
         isValid = true;
     }
-    let radioSection = document.forms[0].querySelector('.radio-section');
-    validate(radioSection);
 }
 
-function checkAllfields(field) {
-    checkLength(field);
+function validate(field) {
+        
     switch (field.type) {
+        case 'text':
+        case 'textarea':
+            checkLength(field);
+            break;
         case 'number':
-            checkNumberInput(field);
+            checkNumbers(field);
             break;
         case 'email':
-            checkEmailInput(field);
+            checkEmail(field);
             break;
+        case 'select-one':
         case 'radio':
-            checkRadioInput(field);
+        case 'checkbox':
+            checkOptions(field);
             break;
     }
+    
+    switchMessage(field.type === 'radio' ? radioSection : field);
 }
 
-fieldsList.forEach(function(field) {
-    field.addEventListener('blur', function() {
-        checkAllfields(field);
-    });
-});
-
-let submit = document.forms[0].querySelector('[type=submit]');
-submit.addEventListener('click', function(evt) {
-    fieldsList.forEach(function(field) {
-        checkAllfields(field);
+function clickHandler(evt) {
+    fieldsList.forEach(field => {
+        validate(field);
         if (!isValid) {
            evt.preventDefault();
            document.querySelector('.invalid').focus();
         }
     });
-});
+}
+
+let submit = document.forms[0].querySelector('[type=submit]');
+submit.addEventListener('click', clickHandler);
+
+fieldsList.forEach(field => field.addEventListener('blur', () => validate(field)));
