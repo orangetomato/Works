@@ -1,0 +1,47 @@
+form {
+    min-width: 550px;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    display: grid;
+    grid-template-columns: 150px auto 1fr;
+	margin-bottom: 5px;
+}
+
+.form-section input[type="text"] {
+	width: 400px;
+}
+
+.form-section input[type="number"] {
+	width: 100px;
+}
+
+.form-section input[type="email"] {
+    width: 200px;
+}
+
+.form-section select {
+    width: 200px;
+}
+
+.form-section textarea {
+    width: 400px;
+    height: 50px;
+}
+
+.radio-section {
+	grid-template-columns: 150px auto auto auto 1fr;
+}
+
+.invalid {
+    outline: 2px solid red;
+}
+
+.error-message {
+    font-size: 11px;
+    align-self: center;
+    padding: 0;
+    margin: 0;
+    margin-left: 5px;
+}
