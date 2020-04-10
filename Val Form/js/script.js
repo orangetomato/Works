@@ -132,7 +132,9 @@ let radioButtons = [...document.forms[0].querySelectorAll('[type=radio]')];
 let checkbox = document.forms[0].querySelector('[type=checkbox]');
 let textarea = document.forms[0].querySelector('textarea');
 
-let fieldsList = [...textInputs, numberInput, emailInput, select, ...radioButtons, checkbox, textarea];
+let textElements = [...textInputs, numberInput, emailInput, textarea];
+let selectElements = [select, ...radioButtons, checkbox];
+let fieldsList = [...textElements, ...selectElements];
 let radioSection = document.forms[0].querySelector('.radio-section');
 let isValid;
 let message;
@@ -226,4 +228,6 @@ function clickHandler(evt) {
 let submit = document.forms[0].querySelector('[type=submit]');
 submit.addEventListener('click', clickHandler);
 
-fieldsList.forEach(field => field.addEventListener('blur', () => validate(field)));
+textElements.forEach(field => field.addEventListener('blur', () => validate(field)));
+textElements.forEach(field => field.addEventListener('keyup', () => validate(field)));
+selectElements.forEach(field => field.addEventListener('change', () => validate(field)));
