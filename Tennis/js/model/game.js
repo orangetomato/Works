@@ -31,10 +31,8 @@ export default class Game {
                 this.yPos = yPos;
                 this.width = 10;
                 this.height = 100;
-                this.speed = 10;
+                this.speed = 0;
                 this.score = 0;
-                this.isMoveUp = false;
-                this.isMoveDown = false;
             }
         }
 
@@ -49,76 +47,64 @@ export default class Game {
         switch(evt.keyCode) {
             case this._shiftKeycode:
                 evt.preventDefault();
-                this._leftBat.isMoveUp = true;
+                this._leftBat.speed = -5;
                 break;
             case this._ctrlKeycode:
                 evt.preventDefault();
-                this._leftBat.isMoveDown = true;
+                this._leftBat.speed = 5;
                 break;
             case this._upArrowKeycode:
                 evt.preventDefault();
-                this._rightBat.isMoveUp = true;
+                this._rightBat.speed = -5;
                 break;
             case this._downArrowKeycode:
                 evt.preventDefault();
-                this._rightBat.isMoveDown = true;
+                this._rightBat.speed = 5;
                 break;
         }
-        
-        this.checkBatPosition(this._field, this._ball, this._leftBat, this._rightBat);
     }
 
     keyupHandler(evt) {
         switch(evt.keyCode) {
             case this._shiftKeycode:
-                this._leftBat.isMoveUp = false;
-                break;
             case this._ctrlKeycode:
-                this._leftBat.isMoveDown = false;
+                this._leftBat.speed = 0;
                 break;
             case this._upArrowKeycode:
-                this._rightBat.isMoveUp = false;
-                break;
             case this._downArrowKeycode:
-                this._rightBat.isMoveDown = false;
+                this._rightBat.speed = 0;
                 break;
         }
     }
 
-    checkBatPosition(field, ball, leftBat, rightBat) {
-        if (leftBat.isMoveUp) {
-            leftBat.yPos -= leftBat.speed;
-
-            if (leftBat.yPos < field.yPos) {
-                leftBat.yPos = field.yPos;
-            }
+    start() {
+        if (this._requestId) {
+            cancelAnimationFrame(this._requestId);
         }
 
-        if (rightBat.isMoveUp) {
-            rightBat.yPos -= rightBat.speed;
+        this.resetBallPosition(this._field, this._ball);
+        this.resetBatPosition(this._field, this._leftBat, this._rightBat)
+        this.runAnimation(this._field, this._ball, this._leftBat, this._rightBat);
+    }
 
-            if (rightBat.yPos < field.yPos) {
-                rightBat.yPos = field.yPos;
-            }
-        }
+    resetBallPosition(field, ball) {
+        ball.xPos = field.width / 2;
+        ball.yPos = field.height / 2;
+    }
 
-        if (leftBat.isMoveDown) {
-            leftBat.yPos += leftBat.speed;
+    resetBatPosition(field, leftBat, rightBat) {
+        leftBat.yPos = 0;
+        rightBat.yPos = field.width - 10;
+    }
 
-            if (leftBat.yPos + leftBat.height > field.height) {
-                leftBat.yPos = field.height - leftBat.height;
-            }
-        }
+    changeBallPosition(ball) {
+        ball.xPos += ball.xSpeed;
+        ball.yPos += ball.ySpeed;
+    }
 
-        if (rightBat.isMoveDown) {
-            rightBat.yPos += rightBat.speed;
-
-            if (rightBat.yPos + rightBat.height > field.height) {
-                rightBat.yPos = field.height - rightBat.height;
-            }
-        }
-
-        this.view.update(field, ball, leftBat, rightBat);
+    changeBatPosition(leftBat, rightBat) {
+        leftBat.yPos += leftBat.speed;
+        rightBat.yPos += rightBat.speed;
     }
 
     checkBallPosition(field, ball, leftBat, rightBat) {        
@@ -143,41 +129,47 @@ export default class Game {
         }
     }
 
-    changeBallPosition(field, ball, leftBat, rightBat) {
-        ball.xPos += ball.xSpeed;
-        ball.yPos += ball.ySpeed;
-        
-        this.view.update(field, ball, leftBat, rightBat);
-        this.checkBallPosition(field, ball, leftBat, rightBat);
-
-        if (ball.xPos - ball.radius >= field.xPos || ball.xPos + ball.radius <= field.width) {
-            this._requestId = requestAnimationFrame(this.changeBallPosition.bind(this, field, ball, leftBat, rightBat));
+    checkBatPosition(field, leftBat, rightBat) {
+        if (leftBat.yPos < field.yPos) {
+            leftBat.yPos = field.yPos;
         }
 
-        if (ball.xPos - ball.radius < field.xPos) {
-            cancelAnimationFrame(this._requestId);
+        if (rightBat.yPos < field.yPos) {
+            rightBat.yPos = field.yPos;
+        }
+
+        if (leftBat.yPos + leftBat.height > field.height) {
+            leftBat.yPos = field.height - leftBat.height;
+        }
+
+        if (rightBat.yPos + rightBat.height > field.height) {
+            rightBat.yPos = field.height - rightBat.height;
+        }
+    }
+
+    checkScore(field, ball, leftBat, rightBat) {
+        if (ball.xPos - ball.radius <= field.xPos) {
             rightBat.score++;
             this.view.updateScore(leftBat, rightBat);
         }
 
-        if (ball.xPos + ball.radius > field.width) {
-            cancelAnimationFrame(this._requestId);
+        if (ball.xPos + ball.radius >= field.width) {
             leftBat.score++;
             this.view.updateScore(leftBat, rightBat);
         }
     }
 
-    resetBallPosition(field, ball) {
-        ball.xPos = field.width / 2;
-        ball.yPos = field.height / 2;
-    }
+    runAnimation(field, ball, leftBat, rightBat) {
+        this.changeBallPosition(ball);
+        this.changeBatPosition(leftBat, rightBat);
+        this.checkBallPosition(field, ball, leftBat, rightBat);
+        this.checkBatPosition(field, leftBat, rightBat);
+        this.view.update(field, ball, leftBat, rightBat);
 
-    start() {
-        if (this._requestId) {
-            cancelAnimationFrame(this._requestId);
+        if (ball.xPos - ball.radius > field.xPos && ball.xPos + ball.radius < field.width) {
+            this._requestId = requestAnimationFrame(this.runAnimation.bind(this, field, ball, leftBat, rightBat));
+        } else {
+            this.checkScore(field, ball, leftBat, rightBat);
         }
-
-        this.resetBallPosition(this._field, this._ball);
-        this.changeBallPosition(this._field, this._ball, this._leftBat, this._rightBat);
     }
 }
