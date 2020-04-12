@@ -229,5 +229,4 @@ let submit = document.forms[0].querySelector('[type=submit]');
 submit.addEventListener('click', clickHandler);
 
 textElements.forEach(field => field.addEventListener('blur', () => validate(field)));
-textElements.forEach(field => field.addEventListener('keyup', () => validate(field)));
 selectElements.forEach(field => field.addEventListener('change', () => validate(field)));
